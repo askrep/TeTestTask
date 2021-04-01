@@ -1,4 +1,5 @@
 # TeTestTask
 Test Task
 
-colors.xml in resource folder TeTestTask\app\src\main\res\xml
+Check TODO list for quick jump:
+colors.xml in resource folder TeT estTask\app\src\main\res\xml

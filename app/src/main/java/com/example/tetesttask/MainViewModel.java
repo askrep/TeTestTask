@@ -17,20 +17,21 @@ import org.xmlpull.v1.XmlPullParserException;
 import java.util.List;
 
 public class MainViewModel extends AndroidViewModel {
+    
     private static final String TAG = "#_VIEW_MODEL";
     private final MutableLiveData<List<SimpleColorItem>> colorItemListLiveData = new MutableLiveData<>();
-
+    
     public MainViewModel(@NonNull Application application) throws XmlPullParserException {
         super(application);
-
+        
         /** Get xml resource*/
         XmlResourceParser xml = application.getResources().getXml(R.xml.colors);
-
+        
         /** Call parse method*/
         List<SimpleColorItem> simpleColorItems = parseToSimpleColorList(xml);
         colorItemListLiveData.setValue(simpleColorItems);
     }
-
+    
     /**
      * Get SimpleColor list from xml resource
      *
@@ -38,11 +39,11 @@ public class MainViewModel extends AndroidViewModel {
      * @return List<SimpleColor>
      */
     private List<SimpleColorItem> parseToSimpleColorList(XmlResourceParser xmlResourceParser) throws XmlPullParserException {
-        List<SimpleColorItem> colorList = ColorXmlParser.parseToSimpleColorList(xmlResourceParser);
+        List<SimpleColorItem> colorList = ColorXmlParser.parseToSimpleColorItemList(xmlResourceParser);
         Log.d(TAG, "parseToSimpleColorList: list size: " + colorList.size());
         return colorList;
     }
-
+    
     public LiveData<List<SimpleColorItem>> getColorItemListLiveData() {
         return colorItemListLiveData;
     }

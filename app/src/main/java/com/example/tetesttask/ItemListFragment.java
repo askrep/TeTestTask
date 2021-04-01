@@ -2,7 +2,6 @@ package com.example.tetesttask;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,62 +18,61 @@ import com.example.tetesttask.data.SimpleColorItem;
 import java.util.List;
 
 public class ItemListFragment extends Fragment {
-
+    
     private static final String TAG = "#_LIST_FRAGMENT";
     public static final int VERTICAL = 1;
-
+    
     public MainViewModel mainViewModel;
-    private List<SimpleColorItem> simpleColorList;
     private RecyclerViewAdapter adapter;
-
+    
     public ItemListFragment() {
     }
-
+    
     @SuppressWarnings("unused")
     public static ItemListFragment newInstance() {
         ItemListFragment fragment = new ItemListFragment();
         return fragment;
     }
-
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mainViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getActivity().getApplication()).create(MainViewModel.class);
+        mainViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getActivity().getApplication())
+                .create(MainViewModel.class);
     }
-
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item_list, container, false);
         RecyclerView recyclerView = null;
-
+        
         /** Init RecyclerView*/
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             recyclerView = (RecyclerView) view;
-
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-
             adapter = new RecyclerViewAdapter();
-
+    
             List<SimpleColorItem> colorItemList = mainViewModel.getColorItemListLiveData().getValue();
+    
+            /** put data list to adapter*/
             adapter.setItemList(colorItemList);
             recyclerView.setAdapter(adapter);
         }
-
+        
         DividerItemDecoration decoration = new DividerItemDecoration(getContext(), VERTICAL);
         recyclerView.addItemDecoration(decoration);
-
+        
         return view;
     }
-
+    
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        
         /** Add LiveData observer for color list*/
         mainViewModel.getColorItemListLiveData().observe(getViewLifecycleOwner(), colorItemList -> {
-            Log.d(TAG, "onViewCreated: " + colorItemList.size());
             adapter.setItemList(colorItemList);
         });
     }

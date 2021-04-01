@@ -6,7 +6,9 @@
     android:name="com.example.tetesttask.ItemListFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/list_margin"
+    android:layout_marginStart="@dimen/list_margin_horizontal"
+    android:layout_marginTop="@dimen/list_margin_vertical"
+    android:layout_marginEnd="@dimen/list_margin_horizontal"
     app:layoutManager="LinearLayoutManager"
     tools:context=".ItemListFragment"
     tools:listitem="@layout/fragment_item_simple" />

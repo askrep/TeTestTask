@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/item_container_expandable"
+    android:id="@+id/item_container"
     android:layout_width="match_parent"
     android:layout_height="@dimen/item_height_expanded"
-    android:background="@drawable/rectangle_rounded_corners_expanded"
+    android:background="@drawable/rectangle_rounded_corners"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
@@ -13,11 +13,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/text_margin"
-        android:textColor="@color/gray"
-        android:textStyle="bold"
         android:gravity="center_vertical"
         android:textAppearance="?attr/textAppearanceListItem"
+        android:textColor="@color/gray"
         android:textSize="@dimen/item_text_size"
-        tools:text="COLOR_NAME" />
+        android:textStyle="bold"
+        tools:text="COLOR_NAME"
+        tools:textColor="@color/white" />
 
 </LinearLayout>
