@@ -12,4 +12,10 @@
     <color
         name="blue"
         color="#FF2A1AF6" />
+    <color
+        name="cyan"
+        color="#009688" />
+    <color
+        name="orange"
+        color="#FF5722" />
 </colors>

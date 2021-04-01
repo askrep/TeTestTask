@@ -17,14 +17,14 @@ public class ColorXmlParser {
     public static final String TAG_ATTR_FIRST = "name";
     public static final String TAG_ATTR_SECOND = "color";
     
-    private List<SimpleColor> colorList;
+    private List<SimpleColorItem> colorList;
     
     public ColorXmlParser() {
         colorList = new ArrayList<>();
     }
     
-    public static List<SimpleColor> parseToSimpleColorList(XmlPullParser xmlPullParser) throws XmlPullParserException {
-        List<SimpleColor> colorList = new ArrayList<>();
+    public static List<SimpleColorItem> parseToSimpleColorList(XmlPullParser xmlPullParser) throws XmlPullParserException {
+        List<SimpleColorItem> colorList = new ArrayList<>();
         
         XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
         factory.setNamespaceAware(true);
@@ -56,7 +56,7 @@ public class ColorXmlParser {
                             }
                         }
                         
-                        colorList.add(new SimpleColor(firstAttribute, secondAttribute));
+                        colorList.add(new SimpleColorItem(firstAttribute, secondAttribute));
                         Log.d(TAG, "SimpleColor: name: " + firstAttribute + "; val: " + secondAttribute);
                     }
                     

@@ -16,7 +16,7 @@ public class MainViewModel extends ViewModel {
      * @param xmlResourceParser XmlResourceParser
      * @return List<SimpleColor>
      */
-    public List<SimpleColor> getSimpleColorList(XmlResourceParser xmlResourceParser) throws XmlPullParserException {
+    public List<SimpleColorItem> getSimpleColorList(XmlResourceParser xmlResourceParser) throws XmlPullParserException {
         return ColorXmlParser.parseToSimpleColorList(xmlResourceParser);
     }
     

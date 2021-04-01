@@ -4,6 +4,7 @@
     android:id="@+id/item_container_expandable"
     android:layout_width="match_parent"
     android:layout_height="@dimen/item_height_expanded"
+    android:background="@drawable/rectangle_rounded_corners_expanded"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 

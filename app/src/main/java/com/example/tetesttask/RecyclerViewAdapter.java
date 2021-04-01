@@ -1,43 +1,65 @@
 package com.example.tetesttask;
 
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.tetesttask.dummy.DummyContent.DummyItem;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import static com.example.tetesttask.SimpleColorItem.EXPANDED_ITEM;
+import static com.example.tetesttask.SimpleColorItem.SIMPLE_ITEM;
+
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     private static final String TAG = "#_LIST_ADAPTER";
-    private final List<SimpleColor> colorList;
-    //private ItemClickListener itemClickListener;
+    private final List<SimpleColorItem> colorList;
+    private View view;
 
-    public RecyclerViewAdapter(List<SimpleColor> simpleColorList/*, ItemClickListener itemClickListener*/) {
+    public RecyclerViewAdapter(List<SimpleColorItem> simpleColorList) {
         this.colorList = simpleColorList;
-        //this.itemClickListener = itemClickListener;
     }
 
-
+    /**
+     * Depending on the viewType (simple or expanding), we fill it with a different layout
+     */
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_item, parent, false);
-        return new ViewHolder(view);
+        view = null;
+
+        if (viewType == SIMPLE_ITEM) {
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.fragment_item_simple, parent, false);
+            return new ViewHolder(view);
+        } else if (viewType == EXPANDED_ITEM) {
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.fragment_item_expanded, parent, false);
+            return new ViewHolder(view);
+        }
+        return null;
     }
+
+    @Override
+    public int getItemViewType(int position) {
+        return colorList.get(position).getType();
+    }
+
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.item = colorList.get(position);
-        holder.colorName.setText(colorList.get(position).getColorName());
-        boolean isExpanded = colorList.get(position).isExpanded();
-        Log.d(TAG, "onBindViewHolder: STATE " + isExpanded);
-        holder.expandedLayout.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+        String colorName = colorList.get(position).getColorName();
+        String colorCode = colorList.get(position).getColorCode();
+        String colorCodeDefault = colorList.get(position).getColorCodeDefault();
+
+        holder.colorName.setText(colorName);
+        if (holder.item.isExpanded()) {
+            /** Change drawable background color*/
+            view.getBackground().setColorFilter(Color.parseColor(colorCode), PorterDuff.Mode.SRC_ATOP);
+        }
     }
 
     @Override
@@ -45,22 +67,20 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return colorList.size();
     }
 
-    /**
-     * OnClick interface
-     */
-
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private static final String TAG = "#_LIST_ADAPTER";
-        public LinearLayout expandedLayout;
+        private static final String TAG = "#_VIEW_HOLDER";
+        private TextView color_name;
+        public View itemView;
         public final TextView colorName;
 
-        public SimpleColor item;
+        public SimpleColorItem item;
 
         public ViewHolder(View view) {
             super(view);
+            this.itemView = view;
 
-            expandedLayout = view.findViewById(R.id.item_container_expandable);
-            colorName = view.findViewById(R.id.color_name);
+            colorName = (TextView) view.findViewById(R.id.color_name);
+
 
             view.setOnClickListener(this);
         }
@@ -68,12 +88,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         @Override
         public void onClick(View view) {
             int adapterPosition = getAdapterPosition();
-            SimpleColor simpleColor = colorList.get(adapterPosition);
+            SimpleColorItem simpleColor = colorList.get(adapterPosition);
+            //TODO Change text color
+/** Change state when clicked*/
             simpleColor.setExpanded(!simpleColor.isExpanded());
+
             notifyItemChanged(getAdapterPosition());
 
-            // to fragment
-            //itemClickListener.onItemClick(adapterPosition, view, simpleColor);
         }
 
         @Override
@@ -82,8 +103,4 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
     }
 
-/*    public interface ItemClickListener {
-
-        void onItemClick(int position, View view, SimpleColor simpleColor);
-    }*/
 }
