@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<colors>
+
+    //TODO Add color if needed
+    <color
+        name="green"
+        color="#FF39F61A" />
+    <color
+        name="red"
+        color="#FFFF0707" />
+    <color
+        name="yellow"
+        color="#FFFFC107" />
+    <color
+        name="blue"
+        color="#FF2A1AF6" />
+    <color
+        name="cyan"
+        color="#009688" />
+    <color
+        name="orange"
+        color="#FF5722" />
+</colors>
