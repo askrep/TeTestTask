@@ -7,18 +7,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.tetesttask.data.SimpleColorItem;
+
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.util.List;
 
-public class ItemListFragment extends Fragment /*implements RecyclerViewAdapter.ItemClickListener*/ {
+public class ItemListFragment extends Fragment{
 
     private static final String TAG = "#_LIST_FRAGMENT";
     public static final int VERTICAL = 1;
@@ -44,18 +45,20 @@ public class ItemListFragment extends Fragment /*implements RecyclerViewAdapter.
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item_list, container, false);
-
         mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
-// Call parse method
+        /** Get xml resource*/
         XmlResourceParser xml = getResources().getXml(R.xml.colors);
+
+        /** Call parse method*/
         try {
-            simpleColorList = mainViewModel.getSimpleColorList(xml);
+            simpleColorList = mainViewModel.parseToSimpleColorList(xml);
         } catch (XmlPullParserException e) {
             e.printStackTrace();
         }
         RecyclerView recyclerView = null;
-        // Set the adapter
+
+        /** Init RecyclerView*/
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             recyclerView = (RecyclerView) view;
@@ -65,6 +68,7 @@ public class ItemListFragment extends Fragment /*implements RecyclerViewAdapter.
             RecyclerViewAdapter adapter = new RecyclerViewAdapter(simpleColorList);
             recyclerView.setAdapter(adapter);
         }
+
         DividerItemDecoration decoration = new DividerItemDecoration(getContext(), VERTICAL);
         recyclerView.addItemDecoration(decoration);
 

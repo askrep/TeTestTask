@@ -1,4 +1,4 @@
-package com.example.tetesttask;
+package com.example.tetesttask.data;
 
 public class SimpleColorItem {
 
@@ -8,15 +8,26 @@ public class SimpleColorItem {
     private static final String TAG = "#_SIMPLE_COLOR";
     private String colorName;
     private String colorCode;
-    private String colorCodeDefault = "#3A3A3A";
     private boolean isExpanded;
-    private int type;
+    private int type; // type for getItemViewType() of RecyclerViewAdapter
 
     public SimpleColorItem(String colorName, String colorCode) {
-        this.colorName = colorName;
+        this.colorName = colorName.substring(0, 1).toUpperCase() + colorName.substring(1);
         this.colorCode = colorCode;
         this.isExpanded = false;
         type = 0;
+    }
+
+    public boolean isExpanded() {
+        return isExpanded;
+    }
+
+    /**
+     * Call when item clicked, change type
+     */
+    public void setExpanded(boolean expanded) {
+        this.isExpanded = expanded;
+        type = isExpanded ? 1 : 0;
     }
 
     public static String getTAG() {
@@ -39,14 +50,6 @@ public class SimpleColorItem {
         this.colorCode = colorCode;
     }
 
-    public boolean isExpanded() {
-        return isExpanded;
-    }
-
-    public void setExpanded(boolean expanded) {
-        this.isExpanded = expanded;
-        type = isExpanded ? 1 : 0;
-    }
 
     public int getType() {
         return type;
@@ -56,11 +59,4 @@ public class SimpleColorItem {
         this.type = type;
     }
 
-    public String getColorCodeDefault() {
-        return colorCodeDefault;
-    }
-
-    public void setColorCodeDefault(String colorCodeDefault) {
-        this.colorCodeDefault = colorCodeDefault;
-    }
 }
