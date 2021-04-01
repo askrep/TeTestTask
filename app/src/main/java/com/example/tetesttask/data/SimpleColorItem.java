@@ -9,6 +9,7 @@ public class SimpleColorItem {
     private String colorName;
     private String colorCode;
     private boolean isExpanded;
+
     private int type; // type for getItemViewType() of RecyclerViewAdapter
 
     public SimpleColorItem(String colorName, String colorCode) {

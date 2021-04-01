@@ -1,12 +1,13 @@
 package com.example.tetesttask;
 
 import android.content.Context;
-import android.content.res.XmlResourceParser;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -15,17 +16,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tetesttask.data.SimpleColorItem;
 
-import org.xmlpull.v1.XmlPullParserException;
-
 import java.util.List;
 
-public class ItemListFragment extends Fragment{
+public class ItemListFragment extends Fragment {
 
     private static final String TAG = "#_LIST_FRAGMENT";
     public static final int VERTICAL = 1;
 
     public MainViewModel mainViewModel;
     private List<SimpleColorItem> simpleColorList;
+    private RecyclerViewAdapter adapter;
 
     public ItemListFragment() {
     }
@@ -39,23 +39,13 @@ public class ItemListFragment extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mainViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getActivity().getApplication()).create(MainViewModel.class);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item_list, container, false);
-        mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
-
-        /** Get xml resource*/
-        XmlResourceParser xml = getResources().getXml(R.xml.colors);
-
-        /** Call parse method*/
-        try {
-            simpleColorList = mainViewModel.parseToSimpleColorList(xml);
-        } catch (XmlPullParserException e) {
-            e.printStackTrace();
-        }
         RecyclerView recyclerView = null;
 
         /** Init RecyclerView*/
@@ -65,7 +55,10 @@ public class ItemListFragment extends Fragment{
 
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-            RecyclerViewAdapter adapter = new RecyclerViewAdapter(simpleColorList);
+            adapter = new RecyclerViewAdapter();
+
+            List<SimpleColorItem> colorItemList = mainViewModel.getColorItemListLiveData().getValue();
+            adapter.setItemList(colorItemList);
             recyclerView.setAdapter(adapter);
         }
 
@@ -75,4 +68,14 @@ public class ItemListFragment extends Fragment{
         return view;
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        /** Add LiveData observer for color list*/
+        mainViewModel.getColorItemListLiveData().observe(getViewLifecycleOwner(), colorItemList -> {
+            Log.d(TAG, "onViewCreated: " + colorItemList.size());
+            adapter.setItemList(colorItemList);
+        });
+    }
 }
