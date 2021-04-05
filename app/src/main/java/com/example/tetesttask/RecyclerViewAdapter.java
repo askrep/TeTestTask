@@ -2,6 +2,7 @@ package com.example.tetesttask;
 
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,31 +19,32 @@ import static com.example.tetesttask.data.SimpleColorItem.EXPANDED_ITEM;
 import static com.example.tetesttask.data.SimpleColorItem.SIMPLE_ITEM;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
-    
+
     private static final String TAG = "#_VIEW_ADAPTER";
     private List<SimpleColorItem> colorList;
     private View view;
-    
+    private final int oldPosition = -1;
+
     public RecyclerViewAdapter() {
     }
-    
+
     public void setItemList(List<SimpleColorItem> simpleColorList) {
         this.colorList = simpleColorList;
         notifyDataSetChanged();
     }
-    
+
     /**
      * Depending on the viewType (simple or expanded), we fill it with a different layout
      */
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         view = null;
-    
+
         if (viewType == SIMPLE_ITEM) {
             view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.fragment_item_simple, parent, false);
             return new ViewHolder(view);
-        
+
         } else if (viewType == EXPANDED_ITEM) {
             view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.fragment_item_expanded, parent, false);
@@ -50,23 +52,23 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         }
         return null;
     }
-    
+
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         SimpleColorItem simpleColorItem = colorList.get(position);
-        
+
         holder.textView.setText(simpleColorItem.getColorName());
-        
+
         if (simpleColorItem.isExpanded()) {
             /** Change drawable background color*/
             holder.layout.getBackground()
-                    .setColorFilter(Color.parseColor(simpleColorItem.getColorCode()), PorterDuff.Mode.SRC_IN);
+                    .setColorFilter(new PorterDuffColorFilter(Color.parseColor(simpleColorItem.getColorCode()), PorterDuff.Mode.SRC_IN));
         } else {
             /** Change color of textView*/
             holder.textView.setTextColor(Color.parseColor(simpleColorItem.getColorCode()));
         }
     }
-    
+
     /**
      * Get view type: simple/expanded
      */
@@ -74,33 +76,42 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public int getItemViewType(int position) {
         return colorList.get(position).getType();
     }
-    
+
     @Override
     public int getItemCount() {
         if (colorList == null) return 0;
         return colorList.size();
     }
-    
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        
+
         private static final String TAG = "#_VIEW_HOLDER";
-        
+
         private final TextView textView;
         private final LinearLayout layout;
-        
+
+
         public ViewHolder(View view) {
             super(view);
-            
+
             textView = view.findViewById(R.id.color_name);
             layout = view.findViewById(R.id.item_container);
             view.setOnClickListener(this);
         }
-        
+
         @Override
         public void onClick(View view) {
             int adapterPosition = getAdapterPosition();
+
+            /** Hide an expanded view holder if clicked in another item*/
+/*            if (oldPosition >= 0 && oldPosition != adapterPosition) {
+                colorList.get(oldPosition).setExpanded(false);
+                notifyItemChanged(oldPosition);
+            }
+            oldPosition = adapterPosition;*/
+
             SimpleColorItem simpleColor = colorList.get(adapterPosition);
-            
+
             /** Invert item state when clicked*/
             simpleColor.setExpanded(!simpleColor.isExpanded());
             notifyItemChanged(getAdapterPosition());

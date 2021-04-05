@@ -10,5 +10,5 @@
     android:layout_marginTop="@dimen/list_margin_vertical"
     android:layout_marginEnd="@dimen/list_margin_horizontal"
     app:layoutManager="LinearLayoutManager"
-    tools:context=".ItemListFragment"
+    tools:context=".fragments.ItemListFragment"
     tools:listitem="@layout/fragment_item_simple" />

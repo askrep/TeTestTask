@@ -1,4 +1,4 @@
-package com.example.tetesttask;
+package com.example.tetesttask.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -13,6 +13,9 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.tetesttask.MainViewModel;
+import com.example.tetesttask.R;
+import com.example.tetesttask.RecyclerViewAdapter;
 import com.example.tetesttask.data.SimpleColorItem;
 
 import java.util.List;
